@@ -12,9 +12,8 @@ public class React: Custom.Hybrid.CodeTyped {
   // ----------------------------------  Private Constants ----------------------------------
   private const string DefaultAppName = "app";   // React app name if not set
   private const string DefaultAppTag = "app-root";  // React app tag if not set
-  private const string LocalDevServer = "//localhost:3000"; // default localhost dev-server using react  
+  private const string LocalDevServer = "//localhost:5173"; // default localhost dev-server using vite
 
-  
   // ------------------------------ Get from Generated HTML ------------------------------
   // load the React generated html file and keep only the important parts
   public string ImportReactHtml(string edition, string appName = DefaultAppName, string appTag = DefaultAppTag) {
@@ -49,8 +48,8 @@ public class React: Custom.Hybrid.CodeTyped {
   // --------------------------------   Get from run start   -------------------------------
   // This returns the tag needed to hot-load the react app 
   public dynamic GetLocalDevTag(string edition = "local", string appTag = DefaultAppTag, string localDevServer = LocalDevServer) {
-    return "<" + appTag + AppAttributes(edition, LocalDevServer + "/") + ">" 
-      + "This loads all scripts from " + localDevServer + " using the same protocol (http/https) as the current site uses. " 
+    return "<" + appTag + AppAttributes(edition, LocalDevServer + "/") + ">"
+      + "This loads all scripts from " + localDevServer + " using the same protocol (http/https) as the current site uses. "
       + "If you see this message, your local dev is either not running, or the configuration is wrong. <br>"
       + "It should be running on localhost:4200 and use the same protocol as this website. <br><br>"
       + "To make sure you're doing things right, please follow <a href='https://azing.org/2sxc/r/oCmPBI3p' target='_blank'>these instructions</a>. <br>"
