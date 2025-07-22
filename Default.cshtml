@@ -1,6 +1,34 @@
 @inherits Custom.Hybrid.RazorTyped
-@* FYI: this inherits from RazorTyped to use the latest APIs. Learn more on https://go.2sxc.org/cs-typed *@
+@using ToSic.Razor.Blade;
+@using ToSic.Sxc.Services;
 
-<div @Kit.Toolbar.Default(MyItem)>
-    Put your content here
-</div>
+@{
+  // Enable 2sic JS APIs (this will load the latest js-api to help with getting data from 2sxc data base)
+  var page = GetService<IPageService>();
+  page.Activate("2sxc.JsCore");
+
+  // Add <base> tag using RazorBlade - TODO: Check if needed
+  HtmlPage.AddBase((Link.Base()));
+
+  // Create helper to manage the editions (live, staging etc.)
+  var editions = GetCode("shared/Editions.cs");
+
+  // Create helper to integrate react best-practice
+  var ngHelpers = GetCode("shared/React.cs");
+
+  // Show React either from dev (local) or from the compiled live/staging folders
+  if (editions.CurrentEdition == "local")
+  {
+    @Html.Partial("ReactApp.PartLocalAssets.cshtml")
+  }
+  else
+  {
+    @Html.Raw(ngHelpers.ImportReactHtml(editions.CurrentEdition));
+  }
+
+  // Show edition selector for host/super users only - you could also change this, to allow testers to see this *@
+  if (MyUser.IsContentAdmin)
+  {
+    @Html.Partial("ReactApp.PartEditions.cshtml", new { Editions = "live,staging,local" })
+  }
+}
