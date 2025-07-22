@@ -29,20 +29,23 @@ public class React: Custom.Hybrid.CodeTyped {
       return "Error trying to access '" + indexFile + "' - it probably doesn't exist";
     }
 
-    // 3.1. Get only the body contents
-    var html = Regex.Match(html_orig, "<body.*?>(.*?)</body>", RegexOptions.Singleline).Groups[1].Value;
+    // 3.1. Extract <head> and <body>
+    var headMatch = Regex.Match(html_orig, "<head.*?>(.*?)</head>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+    var headHtml = headMatch.Success ? headMatch.Groups[1].Value : "";
+    var bodyMatch = Regex.Match(html_orig, "<body.*?>(.*?)</body>", RegexOptions.Singleline | RegexOptions.IgnoreCase);
+    var bodyHtml = bodyMatch.Success ? bodyMatch.Groups[1].Value : "";
 
-    // 3.2. Get stylesheets
-    html += Regex.Match(html_orig, "<link rel=\"stylesheet\".*?>", RegexOptions.Singleline).Groups[0].Value;
+    // 3.2. Fix asset paths in <head> for Vite output: handle ./assets/ and assets/
+    headHtml = Regex.Replace(headHtml,
+      @"(href|src)=""(\.?\/)?assets\/([^""]+)""",
+      $"$1=\"{resourcesPath}/assets/$3\"",
+      RegexOptions.IgnoreCase);
 
-    // 4. Change stylesheet and script paths
-    html = Regex.Replace(html, "(src|href)=\"(.*?)\"", "$1=\"" + resourcesPath + "/$2\"");
+    // 3.3. Replace the appTag for edition and resource path in <body>
+    bodyHtml = bodyHtml.Replace("<" + appTag + ">", "<" + appTag + AppAttributes(edition, resourcesPath + "/") + ">");
 
-    // 5. find the app-tag, and add the edition
-    // var publicResourcePath = App
-    html = html.Replace("<" + appTag + ">", "<" + appTag + AppAttributes(edition, resourcesPath + "/") + ">");
-
-    return html;
+    // 3.4. Return preserved structure (head + body)
+    return "<head>" + headHtml + "</head>\n<body>" + bodyHtml + "</body>";
   }
 
   // --------------------------------   Get from run start   -------------------------------
