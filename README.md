@@ -21,3 +21,9 @@ Install this app on your 2sxc installation and run `npm install` inside the Reac
 To serve the app, run the `start` script inside the `package.json`. After selecting "local" on the edition switch, you should see the app running with live reload.
 
 ### Dependencies
+
+
+## Important for Development
+
+1. Add `type="button"` to `button` elements to prevent _FormSubmissions_, causing the page to reload.
+1. 
