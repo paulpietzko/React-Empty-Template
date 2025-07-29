@@ -22,8 +22,10 @@ To serve the app, run the `start` script inside the `package.json`. After select
 
 ### Dependencies
 
+1. React
+1. Vite
 
 ## Important for Development
 
 1. Add `type="button"` to `button` elements to prevent _FormSubmissions_, causing the page to reload.
-1. 
+1. Styles need to be scoped to `#root{ /* Styles */ }` so they only effect the `app`
