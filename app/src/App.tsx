@@ -1,35 +1,71 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from 'react';
+import type { Sxc } from '@2sic.com/2sxc-typings';
 
-function App() {
-  const [count, setCount] = useState(0)
-
-  return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button type='button' onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+interface Franchise {
+  Id: number;
+  Name: string;
+  City: string;
+  Championships: number;
+  Logo: string;
+  Color: string;
 }
 
-export default App
+declare global {
+  interface Window {
+    reactAppConfig?: {
+      moduleId?: number;
+    };
+  }
+}
+
+// Pick up moduleId passed from Razor
+const moduleId = (window?.reactAppConfig?.moduleId ?? 0) as number;
+
+export default function App() {
+  const [franchises, setFranchises] = useState<Franchise[]>([]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      if (!moduleId) {
+        console.warn('Module ID not found.');
+        return;
+      }
+
+      const sxc: Sxc = $2sxc(moduleId);
+      const apiUrl = sxc.webApi.url('/api/2sxc/app/auto/data/Franchises');
+      const headers = sxc.webApi.headers('GET');
+
+      try {
+        const response = await fetch(apiUrl, {
+          method: 'GET',
+          headers: headers,
+        });
+
+        const data = await response.json();
+        setFranchises(data);
+      } catch (err) {
+        console.error('Failed to fetch franchise data:', err);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  return (
+    <div className="franchise-list">
+      <h2>NBA Franchises</h2>
+      <ul>
+        {franchises.map((f: Franchise) => (
+          <li key={f.Id} style={{ color: f.Color }}>
+            <img
+              src={f.Logo}
+              alt={f.Name}
+              style={{ height: '40px', verticalAlign: 'middle' }}
+            />{' '}
+            {f.Name} ({f.City}) - Championships: {f.Championships}
+          </li>
+        ))}
+      </ul>
+    </div>
+  );
+}

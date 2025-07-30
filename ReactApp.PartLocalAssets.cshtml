@@ -2,14 +2,25 @@
 @{
   var reactHelper = GetCode("shared/React.cs");
   var localDevServer = reactHelper.GetLocalDevServer();
+
+  var moduleId = MyContext.Module.Id;
 }
 @Html.Raw(reactHelper.GetLocalDevTag())
-<script type="module">
-  import RefreshRuntime from '@($"{localDevServer}/@react-refresh")'
-  RefreshRuntime.injectIntoGlobalHook(window)
-  window.$RefreshReg$ = () => {}
-  window.$RefreshSig$ = () => (type) => type
-  window.__vite_plugin_react_preamble_installed__ = true
+
+<script>
+  // Pass moduleId from Razor to JS global config
+  window.reactAppConfig = {
+    moduleId: @moduleId
+  };
 </script>
+
+<script type="module">
+  import RefreshRuntime from '@($"{localDevServer}/@react-refresh")';
+  RefreshRuntime.injectIntoGlobalHook(window);
+  window.$RefreshReg$ = () => {};
+  window.$RefreshSig$ = () => (type) => type;
+  window.__vite_plugin_react_preamble_installed__ = true;
+</script>
+
 <script type="module" src="@($"{localDevServer}/@vite/client")"></script>
 <script type="module" src="@($"{localDevServer}/src/main.tsx")"></script>
