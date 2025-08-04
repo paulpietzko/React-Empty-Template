@@ -4,8 +4,11 @@ export default function FranchiseCard({ franchise }: { franchise: Franchise }) {
   return (
     <a
       href={franchise.Website}
-      className="card h-100"
-      style={{ borderLeft: `6px solid ${franchise.Color}` }}
+      className="card h-100 text-dark"
+      style={{
+        borderLeft: `6px solid ${franchise.Color}`,
+        background: `linear-gradient(to right, ${franchise.Color}50, #fff)`,
+      }}
     >
       <div className="card-body d-flex align-items-center">
         <img
@@ -18,14 +21,7 @@ export default function FranchiseCard({ franchise }: { franchise: Franchise }) {
             objectFit: "contain",
           }}
         />
-        <div>
-          <h5 className="card-title mb-1">
-            {franchise.Name} <span className="text-muted">({franchise.City})</span>
-          </h5>
-          <p className="card-text small mb-0">
-            Championships: {franchise.Championships}
-          </p>
-        </div>
+        <h5>{franchise.Name}</h5>
       </div>
     </a>
   );
