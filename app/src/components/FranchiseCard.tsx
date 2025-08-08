@@ -1,7 +1,6 @@
 import type { Franchise } from "../models/Franchise";
 import * as toolbar from "../actions/toolbar";
 import React from "react";
-import type { CommandName } from "../models/CommandName";
 
 export default function FranchiseCard({ franchise }: { franchise: Franchise }) {
   const cardRef = React.useRef<HTMLDivElement>(null);
@@ -9,8 +8,7 @@ export default function FranchiseCard({ franchise }: { franchise: Franchise }) {
   const handleEditClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     if (!cardRef.current) return;
     const params = { contentType: "Franchises", entityId: franchise.Id };
-    const command: CommandName = "edit";
-    toolbar.openDialog(cardRef.current, event, command, params);
+    toolbar.edit(cardRef.current, event, params);
   };
 
   return (
