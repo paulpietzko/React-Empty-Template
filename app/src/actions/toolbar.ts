@@ -6,29 +6,16 @@ import type {
 
 declare const $2sxc: SxcGlobal;
 
-export function edit(
+export function openDialog(
   tag: HTMLElement,
   event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
+  action: CommandNames,
   params: CommandParams
 ): void {
   event.preventDefault();
 
   $2sxc(tag).cms.run({
-    action: "edit" as CommandNames,
-    params,
-    workflows: [],
-  });
-}
-
-export function add(
-  tag: HTMLElement,
-  event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  params: CommandParams
-): void {
-  event.preventDefault();
-
-  $2sxc(tag).cms.run({
-    action: "add" as CommandNames,
+    action,
     params,
     workflows: [],
   });

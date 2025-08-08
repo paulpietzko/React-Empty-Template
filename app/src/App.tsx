@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import type { Sxc } from "@2sic.com/2sxc-typings";
+import { useEffect, useRef, useState } from "react";
+import type { CommandNames, Sxc } from "@2sic.com/2sxc-typings";
 import type { Franchise } from "./models/Franchise";
 import FranchiseCard from "./components/FranchiseCard";
 import ConferenceFilter from "./components/ConferenceFilter";
@@ -13,20 +13,18 @@ interface AppProps {
 export default function App({ moduleId }: AppProps) {
   const [franchises, setFranchises] = useState<Franchise[]>([]);
   const [conferenceFilter, setConferenceFilter] = useState<string | null>(null);
-  const buttonRef = React.useRef<HTMLButtonElement>(null);
+  const containerRef = useRef<HTMLDivElement>(null);
 
-  // WIP: Doesn't work yet
   const handleAddClick = (event: React.MouseEvent<HTMLButtonElement>) => {
-    console.log("triggerd");
-    if (!buttonRef.current) return;
-    console.log("still in functino");
+    if (!containerRef.current) return;
     const params = { contentType: "Franchises" };
-    toolbar.add(buttonRef.current, event, params);
+    toolbar.openDialog(containerRef.current, event, "edit" as CommandNames, params);
   };
 
   const filteredFranchises = conferenceFilter
     ? franchises.filter((f) => f.Conference === conferenceFilter)
     : franchises;
+
   useEffect(() => {
     const fetchData = async () => {
       if (!moduleId) {
@@ -50,7 +48,7 @@ export default function App({ moduleId }: AppProps) {
   }, [moduleId]);
 
   return (
-    <div className="container my-4">
+    <div className="container my-4" ref={containerRef}>
       <h2 className="mb-4">NBA Franchises</h2>
 
       <div className="d-flex justify-content-between align-items-center">
@@ -60,12 +58,11 @@ export default function App({ moduleId }: AppProps) {
         />
 
         <button
-          ref={buttonRef}
           className="btn btn-success mb-3"
           onClick={handleAddClick}
           type="button"
         >
-          Add
+          Add Franchise
         </button>
       </div>
 
