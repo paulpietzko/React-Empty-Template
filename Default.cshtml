@@ -3,6 +3,8 @@
 @using ToSic.Sxc.Services;
 
 @{
+  var moduleId = MyContext.Module.Id;
+
   // Enable 2sic JS APIs (this will load the latest js-api to help with getting data from 2sxc data base)
   var page = GetService<IPageService>();
   page.Activate("2sxc.JsCore");
@@ -26,7 +28,6 @@
     @Html.Raw(ngHelpers.ImportReactHtml(editions.CurrentEdition));
 
     // Add the root div with the moduleId to the page
-    var moduleId = MyContext.Module.Id;
     <div id="root-@moduleId"></div>
   }
 
@@ -36,3 +37,9 @@
     @Html.Partial("ReactApp.PartEditions.cshtml", new { Editions = "live,staging,local" })
   }
 }
+
+<script>
+  document.addEventListener("DOMContentLoaded", function() {
+    window.reactAppMain && window.reactAppMain(@moduleId);
+  });
+</script>

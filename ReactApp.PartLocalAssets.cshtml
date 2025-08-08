@@ -2,7 +2,6 @@
 @{
   var reactHelper = GetCode("shared/React.cs");
   var localDevServer = reactHelper.GetLocalDevServer();
-  var moduleId = MyContext.Module.Id;
 }
 
 @Html.Raw(reactHelper.GetLocalDevTag())
@@ -17,9 +16,3 @@
 
 <script type="module" src="@($"{localDevServer}/@vite/client")"></script>
 <script type="module" src="@($"{localDevServer}/src/main.tsx")"></script>
-
-<script>
-  document.addEventListener("DOMContentLoaded", () => {
-    window.reactAppMain && window.reactAppMain(@moduleId);
-  });
-</script>
