@@ -37,7 +37,7 @@ export default function FranchiseCard({ franchise }: { franchise: Franchise }) {
       </a>
       <button
         onClick={handleEditClick}
-        className="btn btn-sm btn-primary position-absolute top-0 end-0 m-2"
+        className="btn btn-link position-absolute top-0 end-0 m-2"
         style={{
           opacity: 0,
           pointerEvents: "none",

@@ -13,16 +13,11 @@ export function edit(
 ): void {
   event.preventDefault();
 
-  $2sxc(tag)
-    .cms.run({
-      action: "edit" as CommandNames,
-      params,
-      workflows: [],
-    })
-    .then(function (data: unknown) {
-      console.log("after run", data);
-      return false;
-    });
+  $2sxc(tag).cms.run({
+    action: "edit" as CommandNames,
+    params,
+    workflows: [],
+  });
 }
 
 export function add(
@@ -32,14 +27,9 @@ export function add(
 ): void {
   event.preventDefault();
 
-  $2sxc(tag)
-    .cms.run({
-      action: "add" as CommandNames,
-      params,
-      workflows: [],
-    })
-    .then(function (data: unknown) {
-      console.log("after run", data);
-      return false;
-    });
+  $2sxc(tag).cms.run({
+    action: "add" as CommandNames,
+    params,
+    workflows: [],
+  });
 }
