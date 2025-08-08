@@ -24,6 +24,10 @@
   else
   {
     @Html.Raw(ngHelpers.ImportReactHtml(editions.CurrentEdition));
+
+    // Add the root div with the moduleId to the page
+    var moduleId = MyContext.Module.Id;
+    <div id="root-@moduleId"></div>
   }
 
   // Show edition selector for host/super users only - you could also change this, to allow testers to see this *@

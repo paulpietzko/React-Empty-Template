@@ -4,18 +4,11 @@ import type { Franchise } from "./models/Franchise";
 import FranchiseCard from "./components/FranchiseCard";
 import ConferenceFilter from "./components/ConferenceFilter";
 
-declare global {
-  interface Window {
-    reactAppConfig?: {
-      moduleId?: number;
-    };
-  }
+interface AppProps {
+  moduleId: number;
 }
 
-// Pick up moduleId passed from Razor
-const moduleId = (window?.reactAppConfig?.moduleId ?? 0) as number;
-
-export default function App() {
+export default function App({ moduleId }: AppProps) {
   const [franchises, setFranchises] = useState<Franchise[]>([]);
   const [conferenceFilter, setConferenceFilter] = useState<string | null>(null);
 
@@ -42,7 +35,7 @@ export default function App() {
     };
 
     fetchData();
-  }, []);
+  }, [moduleId]);
 
   return (
     <div className="container my-4">

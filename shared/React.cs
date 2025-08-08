@@ -55,7 +55,9 @@ public class React: Custom.Hybrid.CodeTyped {
   public dynamic GetLocalDevTag(string edition = "local", string appTag = DefaultAppTag, string localDevServer = LocalDevServer) {
     // Standard React expects <div id="root"></div>
     // Pass edition/dist-path as data attributes if desired
-    return "<div id=\"root\"" + AppAttributes(edition, localDevServer + "/") + "></div>";
+    // Set the moduleId to scope the app to the current module
+    var moduleId = MyContext.Module.Id;
+    return "<div id=\"root-" + moduleId + "\"" + AppAttributes(edition, localDevServer + "/") + "></div>";
   }
 
   public string GetLocalDevServer() {
